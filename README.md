@@ -8,7 +8,7 @@ The tool needs two parameters which are:
 
 >**Baud rate**: Specify the speed of reading and writing. Supported values are: `9600, 19200, 38400, 57600, 115200, 230400`
 
-# AUR
+## AUR
 This program is distributed on the AUR repositories for Arch linux under the package name `uarty-git`
 
 ## Contributing
