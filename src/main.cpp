@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <stdexcept>
+#include <sys/select.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -69,12 +70,38 @@ int main(int argc, char *argv[]) {
     tcsetattr(fd, TCSANOW, &tty);
 
     char buf[256];
+    char buf_in[256];
 
     while (true) {
-        int n = read(fd, buf, sizeof(buf));
+        fd_set set;
+        FD_ZERO(&set);
+        FD_SET(fd, &set);
+        FD_SET(STDIN_FILENO, &set);
 
-        if (n > 0) {
-            std::cout.write(buf, n);
+        int maxfd = std::max(fd, STDIN_FILENO);
+
+        // Reads both fd without blocking 
+        int ret = select(maxfd + 1, &set, nullptr, nullptr, nullptr);
+
+        if (ret < 0) break;
+
+        // Output to screen
+        if (FD_ISSET(fd, &set)) {
+            int n = read(fd, buf, sizeof(buf));
+            if (n > 0) {
+                std::cout.write(buf, n);
+                std::cout.flush();
+            }
         }
+
+        // Input to serial
+        if (FD_ISSET(STDIN_FILENO, &set)) {
+            int i = read(STDIN_FILENO, buf_in, sizeof(buf_in));
+            if (i > 0) {
+                write(fd, buf_in, i);
+            }
+        }
+
+
     }
 }
