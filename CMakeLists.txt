@@ -11,4 +11,4 @@ file(GLOB SOURCES CMAKE_CONFIGURE_DEPENDS src/*.cpp)
 
 add_executable(Uarty ${SOURCES})
 
-target_include_directories(Uarty PRIVATE include)
+target_include_directories(uarty PRIVATE include)
