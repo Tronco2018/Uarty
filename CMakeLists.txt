@@ -9,4 +9,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB SOURCES CMAKE_CONFIGURE_DEPENDS src/*.cpp)
 
-add_executable(Uarty ${SOURCES})
+add_executable(uarty ${SOURCES})
