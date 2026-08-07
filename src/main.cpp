@@ -1,23 +1,19 @@
 #include <cstdio>
 #include <iostream>
+#include <ostream>
 #include <stdexcept>
+#include <string>
 #include <sys/select.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <stdint.h>
 
 std::string port;
 baud_t baud;
 
 baud_t parse_baud(const std::string& s) {
-    if (s == "9600") return B9600;
-    if (s == "19200") return B19200;
-    if (s == "38400") return B38400;
-    if (s == "57600") return B57600;
-    if (s == "115200") return B115200;
-    if (s == "230400") return B230400;
-
-    throw std::runtime_error("unsupported baud rate");
+    return std::stoi(s);
 }
 
 int check_args(int argc, char *argv[]) {
